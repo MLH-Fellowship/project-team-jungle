@@ -26,17 +26,19 @@ TypeWriter.prototype.type = function () {
 
     if (this.isDeleting) typeSpeed /= 2;
 
+    // last word in words
     if (!this.isDeleting && this.txt === fullTxt && this.wordIndex + 1 === this.words.length) {
         this.done = true;
-    } else if (!this.isDeleting && this.txt === fullTxt) {
+    } else if (!this.isDeleting && this.txt === fullTxt) { // word complete, pause
         typeSpeed = this.wait;
         this.isDeleting = true;
-    } else if (this.isDeleting && this.txt === '') {
+    } else if (this.isDeleting && this.txt === '') { // start new word, pause
         typeSpeed = 500;
         this.isDeleting = false;
         this.wordIndex++;
     }
 
+    // remove blink animation after some time, stop running the function
     if (this.done) {
         setTimeout(() => {
             this.txtElement.classList.toggle('blink');
@@ -48,11 +50,7 @@ TypeWriter.prototype.type = function () {
     }
 }
 
-function delay(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
-
-//Init App
+// Init App
 function init() {
     const txtElement = document.querySelector('.txt-type');
     const words = JSON.parse(txtElement.getAttribute('data-words'));
